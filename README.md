@@ -1,9 +1,7 @@
 # Host Checker — Сервис проверки хостов и DNS
 
 Сервис для диагностики доступности хостов и DNS-записей из распределённых агентов.  
-Аналог [check-host.net](https://check-host.net).
 
-![Demo](https://via.placeholder.com/800x400?text=Host+Checker+UI+Preview) <!-- опционально -->
 
 ---
 
