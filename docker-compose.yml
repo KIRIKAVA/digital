@@ -1,0 +1,63 @@
+services:
+  # База данных
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: hostchecker
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      TZ: Europe/Moscow
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # Бэкенд
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://postgres:password@db:5432/hostchecker
+      REDIS_URL: redis://redis:6379/0
+      TZ: Europe/Moscow
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - db
+    command: >
+      sh -c "pip install -r requirements.txt &&
+             uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+
+   # Фронтенд
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    environment:
+      - VITE_API_URL=/api
+      - TZ=Europe/Moscow
+  # Агент - ОБНОВЛЯЕМ для реальных проверок!
+  agent:
+    build: ./agent
+    environment:
+      BACKEND_URL: http://backend:8000
+      AGENT_TOKEN: secret123
+      AGENT_NAME: docker-agent-1
+      TZ: Europe/Moscow
+    depends_on:
+      - backend
+    volumes:
+      - ./agent:/app
+    # Добавляем привилегии для ping и сетевых проверок
+    cap_add:
+      - NET_RAW
+    privileged: true
+
+volumes:
+  postgres_data:

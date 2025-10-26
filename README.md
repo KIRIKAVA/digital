@@ -1,0 +1,26 @@
+# Host Checker — Сервис проверки хостов и DNS
+
+Сервис для диагностики доступности хостов и DNS-записей из распределённых агентов.  
+Аналог [check-host.net](https://check-host.net).
+
+![Demo](https://via.placeholder.com/800x400?text=Host+Checker+UI+Preview) <!-- опционально -->
+
+---
+
+## Быстрый запуск
+
+Убедитесь, что у вас установлены:
+- [Docker](https://docs.docker.com/engine/install/)
+- [Docker Compose](https://docs.docker.com/compose/install/) (обычно идёт вместе с Docker Desktop)
+
+### 1. Склонируйте или распакуйте архив с проектом
+
+Если вы получили ZIP — распакуйте его в любую папку.
+
+### 2. Запустите всё одной командой:
+
+в консоли, перейдя в папку проекта cd ...
+docker-compose up --build
+
+### 3. Откройте в браузере:
+http://localhost:3000
